@@ -7,7 +7,7 @@ Logredact is a Logrus hook for removing sensitive information from log entries. 
 To install the `logredact`, run the following command:
 
 ```sh
-go get github.com/eddort/logredact
+go get github.com/disaster37/logredact
 ```
 
 ## Usage
@@ -18,14 +18,14 @@ To use the logredact, import it in your Go code and add it to your Logrus logger
 package main
 
 import (
-	"github.com/eddort/logredact"
+	"github.com/disaster37/logredact"
 	"github.com/sirupsen/logrus"
 )
 
 func main() {
 	logger := logrus.New()
 
-	secrets := []string{"supersecret", "anothersecret"}
+	secrets := []string{"supersecret", "anothersecret", `password=.*`}
 	secretHook := logredact.New(secrets, "***")
 
 	logger.AddHook(secretHook)
@@ -44,7 +44,7 @@ package main
 
 import (
 	"github.com/sirupsen/logrus"
-	"github.com/eddort/logredact"
+	"github.com/disaster37/logredact"
 )
 
 type MyStruct struct {

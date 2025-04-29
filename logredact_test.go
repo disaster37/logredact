@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/eddort/logredact"
+	"github.com/disaster37/logredact"
 	"github.com/sirupsen/logrus"
 	"github.com/stretchr/testify/assert"
 )

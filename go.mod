@@ -1,6 +1,6 @@
-module github.com/eddort/logredact
+module github.com/disaster37/logredact
 
-go 1.20
+go 1.24
 
 require (
 	github.com/sirupsen/logrus v1.9.3
