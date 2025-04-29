@@ -30,6 +30,12 @@ func TestSecretRemoverHook(t *testing.T) {
 			shouldContain: true,
 		},
 		{
+			name:          "regex",
+			input:         "password=hunter2&username=test",
+			expected:      "password",
+			shouldContain: false,
+		},
+		{
 			name:          "integer",
 			input:         42,
 			expected:      "42",
@@ -66,7 +72,7 @@ func TestSecretRemoverHook(t *testing.T) {
 			buf := new(bytes.Buffer)
 			logger := logrus.New()
 			logger.SetOutput(buf)
-			logger.AddHook(logredact.New([]string{"hunter2", "password123", "mysecret123", "hiddensecret"}, "***"))
+			logger.AddHook(logredact.New([]string{"hunter2", "password123", "mysecret123", "hiddensecret", `password=.*`}, "***"))
 
 			logger.WithField("input", tc.input).Info("Test log entry")
 

@@ -2,18 +2,24 @@ package logredact
 
 import (
 	"reflect"
-	"strings"
+	"regexp"
 
 	"github.com/sirupsen/logrus"
 )
 
 type LogRedact struct {
-	secrets  []string
+	secrets  []*regexp.Regexp
 	replacer string
 }
 
 func New(secrets []string, replacer string) *LogRedact {
-	return &LogRedact{secrets: secrets, replacer: replacer}
+
+	var compiledSecrets []*regexp.Regexp
+	for _, secret := range secrets {
+		compiledSecrets = append(compiledSecrets, regexp.MustCompile(secret))
+	}
+
+	return &LogRedact{secrets: compiledSecrets, replacer: replacer}
 }
 
 func (h *LogRedact) Levels() []logrus.Level {
@@ -82,7 +88,7 @@ func (h *LogRedact) processValueRecursively(src, dest reflect.Value) {
 
 func (h *LogRedact) replaceSecrets(s string) string {
 	for _, secret := range h.secrets {
-		s = strings.Replace(s, secret, h.replacer, -1)
+		s = secret.ReplaceAllString(s, h.replacer)
 	}
 	return s
 }
